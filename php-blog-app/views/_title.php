@@ -1,5 +1,5 @@
 <?php 
-    $about = count($films).' movies listed in '.count($categories).' categories';
+    $about = count(getFilms()).' movies listed in '.count($categories).' categories';
 ?>
 
 <h1 class="mb-4"> <?php echo $baslig ?></h1>

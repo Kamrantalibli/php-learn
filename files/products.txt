@@ -1,0 +1,4 @@
+Iphone 14|4000
+Iphone 13|3000
+Iphone 12|2000
+Iphone 11|1000

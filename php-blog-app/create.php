@@ -1,6 +1,17 @@
 <?php
     require "libs/vars.php";
     require "libs/functions.php";
+
+    if($_SERVER['REQUEST_METHOD'] == "POST"){
+        $title = $_POST['title'];
+        $description = $_POST['description'];
+        $imageurl = $_POST['imageurl'];
+        $url = $_POST['url'];
+
+        addFilm($title,$description,$imageurl,$url);
+        header("Location: index.php");
+    }
+
 ?>
 
 <?php include "views/_header.php"; ?>
@@ -15,7 +26,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="index.php" method="POST">
+                    <form action="create.php" method="POST">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
                             <input type="text" class="form-control" name="title" id="title">
@@ -29,6 +40,11 @@
                         <div class="mb-3">
                             <label for="imageurl" class="form-label">Image</label>
                             <input type="text" class="form-control" name="imageurl" id="imageurl">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="url" class="form-label">Url</label>
+                            <input type="text" class="form-control" name="url" id="url">
                         </div>
 
                         <input type="submit" value="Submit" class="btn btn-primary">

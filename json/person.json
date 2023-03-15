@@ -1,0 +1,14 @@
+{
+    "firstName": "Kamran",
+    "lansName": "Talibli",
+    "hobbies": ["idman","sinema"],
+    "age": 23,
+    "language": [
+        {
+            "name": "javaScript"
+        },
+        {
+            "name": "php"
+        }
+    ]
+}

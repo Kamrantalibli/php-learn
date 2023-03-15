@@ -1,4 +1,4 @@
-<?php foreach ($films as $id => $film): ?>
+<?php foreach (getFilms() as $id => $film): ?>
     <div class="card mb-3">
         <div class="row">
             <div class="col-3">
