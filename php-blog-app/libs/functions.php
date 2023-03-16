@@ -1,30 +1,55 @@
 <?php 
-    function addFilm(string $title, string $description, string $image, string $url, int $commentcount=0, int $likecount=0, bool $vision=false) {
-        $myfile = fopen("data.txt","a");
-        $content = $title."|".$description."|".$image."|".$url."|".$commentcount."|".$likecount."|".(int)$vision;
-        fwrite($myfile,$content."\n");
+
+    function getData() {
+        $myfile = fopen("db.json","r");
+        $size = filesize("db.json");
+        $result = json_decode(fread($myfile,$size), true);
+        fclose($myfile);
+        return $result;
+    };
+
+    function createUser(string $name, string $email, string $username, string $password,) {
+        $db = getData();
+        
+        array_push($db["users"], array(
+            "id" => count($db["users"])+1,
+            "username" => $username,
+            "password" => $password,
+            "name" => $name,
+            "email" => $email
+        ));
+        $myfile = fopen("db.json","w");
+        fwrite($myfile, json_encode($db, JSON_PRETTY_PRINT));
         fclose($myfile);
     }
 
-    function getFilms() {
-        $myfile = fopen("data.txt","r");
-        $list = [];
+    function getUser(string $username) {
+        $users = getData()["users"];
 
-        while(($line = fgets($myfile)) !== false) {
-            $slices = explode("|", $line);
-
-            array_push($list, array(
-                "title" => $slices[0],
-                "description" => $slices[1],
-                "image" => $slices[2],
-                "url" => $slices[3],
-                "commentcount" => $slices[4],
-                "likecount" => $slices[5],
-                "vision" => $slices[6]
-            ));
+        foreach($users as $user) {
+            if($user["username"] == $username) {
+                return $user;
+            }
         }
+        return null;
+    }
+
+
+    function createBlog(string $title, string $description, string $imageUrl, string $url, int $comments=0, int $likes=0) {
+        $db = getData();
+        
+        array_push($db["movies"], array(
+            "id" => count($db["movies"])+1,
+            "title" => $title,
+            "description" => $description,
+            "image-url" => $imageUrl,
+            "url" => $url
+            "likes" => $likes
+            "comments" => $comments
+        ));
+        $myfile = fopen("db.json","w");
+        fwrite($myfile, json_encode($db, JSON_PRETTY_PRINT));
         fclose($myfile);
-        return $list;
     }
 
     function shortDescription($description, $limit) {

@@ -19,10 +19,10 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a href="create.php" class="nav-link">Create</a>
+                    <a href="blog-create.php" class="nav-link">Create Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Link 2</a>
+                    <a href="blog-list" class="nav-link">Blog List</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Link 3</a>
@@ -45,7 +45,7 @@
                         <a href="login.php" class="nav-link">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Register</a>
+                        <a href="register.php" class="nav-link">Register</a>
                     </li>
 
                 <?php endif; ?>

@@ -5,10 +5,10 @@
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         $title = $_POST['title'];
         $description = $_POST['description'];
-        $imageurl = $_POST['imageurl'];
+        $imageUrl = $_POST['imagUurl'];
         $url = $_POST['url'];
 
-        addFilm($title,$description,$imageurl,$url);
+        createBlog($title, $description, $imageUrl, $url);
         header("Location: index.php");
     }
 
@@ -26,7 +26,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="create.php" method="POST">
+                    <form action="blog-create.php" method="POST">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
                             <input type="text" class="form-control" name="title" id="title">
@@ -38,8 +38,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="imageurl" class="form-label">Image</label>
-                            <input type="text" class="form-control" name="imageurl" id="imageurl">
+                            <label for="imageUrl" class="form-label">imageUrl</label>
+                            <input type="text" class="form-control" name="imageUrl" id="imageUrl">
                         </div>
 
                         <div class="mb-3">

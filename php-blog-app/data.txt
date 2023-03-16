@@ -1,1 +1,2 @@
 yeni film|description|1.jpeg|yeni-film|0|0|0
+yeni blog|description|2.jpeg|yeni-blog|0|0|0

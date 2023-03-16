@@ -1,0 +1,79 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Kamran Talibli",
+            "username": "kamrantalibli",
+            "password": "1234",
+            "email": "bytalibli2@gmail.com"
+        },
+        {
+            "id": 1,
+            "name": "Kerim Rehimov",
+            "username": "kerimrehimov",
+            "password": "1234",
+            "email": "kerim@gmail.com"
+        },
+        {
+            "id": 1,
+            "name": "Nurlan Huseynli",
+            "username": "nurlanhuseynli",
+            "password": "1234",
+            "email": "nurlan@gmail.com"
+        },
+        {
+            "id": 4,
+            "username": "kenanfilankes",
+            "password": "1234",
+            "name": "Kenan world",
+            "email": "kenan@gmail.com"
+        }
+    ],
+    "movies": [
+        {
+            "id": 1,
+            "title": "film 1",
+            "description": "film 1 description",
+            "url": "film-1",
+            "image-url": "1.jpeg",
+            "likes": 10,
+            "commments": 5
+        },
+        {
+            "id": 2,
+            "title": "film 2",
+            "description": "film 2 description",
+            "url": "film-2",
+            "image-url": "2.jpeg",
+            "likes": 0,
+            "commments": 0
+        },
+        {
+            "id": 3,
+            "title": "film 3",
+            "description": "film 3 description",
+            "url": "film-3",
+            "image-url": "3.jpeg",
+            "likes": 5,
+            "commments": 0
+        }
+    ],
+    "categories": [
+        {
+            "id": 1,
+            "name": "Adventure"
+        },
+        {
+            "id": 2,
+            "name": "Drama"
+        },
+        {
+            "id": 3,
+            "name": "Comedy"
+        },
+        {
+            "id": 4,
+            "name": "Fear"
+        }
+    ]
+}
