@@ -35,7 +35,7 @@
     }
 
 
-    function createBlog(string $title, string $description, string $imageUrl, string $url, int $comments=0, int $likes=0) {
+    function createBlog(string $title, string $description, string $imageUrl, string $url, int $comments=0, int $likes=0, bool $is_active=false) {
         $db = getData();
         
         array_push($db["movies"], array(
@@ -43,9 +43,10 @@
             "title" => $title,
             "description" => $description,
             "image-url" => $imageUrl,
-            "url" => $url
-            "likes" => $likes
-            "comments" => $comments
+            "url" => $url,
+            "likes" => $likes,
+            "comments" => $comments,
+            "is-active" => $is_active
         ));
         $myfile = fopen("db.json","w");
         fwrite($myfile, json_encode($db, JSON_PRETTY_PRINT));

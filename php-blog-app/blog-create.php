@@ -5,7 +5,7 @@
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         $title = $_POST['title'];
         $description = $_POST['description'];
-        $imageUrl = $_POST['imagUurl'];
+        $imageUrl = $_POST['imageUrl'];
         $url = $_POST['url'];
 
         createBlog($title, $description, $imageUrl, $url);
@@ -19,10 +19,7 @@
 
 <div class="container my-3">
     <div class="row">
-        <dib class="col-3">
-            <?php include "views/_menu.php";  ?>    
-        </dib>
-        <dib class="col-9">
+        <dib class="col-12">
 
             <div class="card">
                 <div class="card-body">

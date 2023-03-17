@@ -22,7 +22,7 @@
                     <a href="blog-create.php" class="nav-link">Create Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a href="blog-list" class="nav-link">Blog List</a>
+                    <a href="admin-blogs.php" class="nav-link">Blog List</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Link 3</a>

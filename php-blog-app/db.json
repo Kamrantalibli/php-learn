@@ -37,7 +37,8 @@
             "url": "film-1",
             "image-url": "1.jpeg",
             "likes": 10,
-            "commments": 5
+            "comments": 5,
+            "is-active": true
         },
         {
             "id": 2,
@@ -45,8 +46,9 @@
             "description": "film 2 description",
             "url": "film-2",
             "image-url": "2.jpeg",
-            "likes": 0,
-            "commments": 0
+            "likes": 5,
+            "comments": 0,
+            "is-active": true
         },
         {
             "id": 3,
@@ -54,8 +56,29 @@
             "description": "film 3 description",
             "url": "film-3",
             "image-url": "3.jpeg",
-            "likes": 5,
-            "commments": 0
+            "likes": 0,
+            "comments": 0,
+            "is-active": false
+        },
+        {
+            "id": 4,
+            "title": "film 4",
+            "description": "film 4 description",
+            "url": "film-4",
+            "image-url": "3.jpeg",
+            "likes": 0,
+            "comments": 0,
+            "is-active": true
+        },
+        {
+            "id": 5,
+            "title": "film 5",
+            "description": "film 5 description",
+            "image-url": "1.jpeg",
+            "url": "film-1",
+            "likes": 0,
+            "comments": 0,
+            "is-active": true
         }
     ],
     "categories": [
