@@ -2,14 +2,50 @@
     require "libs/vars.php";
     require "libs/functions.php";
 
+    $title = $description = "";
+    $title_err = $description_err = "";
+
     if($_SERVER['REQUEST_METHOD'] == "POST"){
-        $title = $_POST['title'];
-        $description = $_POST['description'];
+
+        // validate title
+        $input_title = trim($_POST['title']);
+
+        if(empty($input_title)) {
+            $title_err = "Title cannot be empty";
+        } else if (strlen($input_title) > 150) {
+            $title_err = "title cannot be more than 150 characters";
+        } else{
+            $title = control_input($input_title);
+        }
+
+        // validate description
+        $input_description = trim($_POST['description']);
+
+        if(empty($input_description)) {
+            $description_err = "Description cannot be empty";
+        } else if (strlen($input_description) < 10) {
+            $description_err = "Description should be more than 10 characters";
+        } else{
+            $description = control_input($input_description);
+        }
+
         $imageUrl = $_POST['imageUrl'];
         $url = $_POST['url'];
 
-        createBlog($title, $description, $imageUrl, $url);
-        header("Location: index.php");
+        echo $title;
+        echo "<br>";
+        echo $description;
+
+        if(empty($title_err) && empty($description_err)) {
+            if(createBlog($title, $description, $imageUrl, $url)) {
+                $_SESSION['message'] = $title." blog has been added.";
+                $_SESSION['type'] = "success";
+        
+                header("Location: admin-blogs.php");
+            } else {
+                echo "Error";
+            }
+        }
     }
 
 ?>
@@ -26,12 +62,14 @@
                     <form action="blog-create.php" method="POST">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" name="title" id="title">
+                            <input type="text" class="form-control <?php echo (!empty($title_err)) ? 'is-invalid' : '' ?>" name="title" id="title" value="<?php echo $title; ?>">
+                            <span class="invalid-feedback"><?php echo $title_err?></span>
                         </div>
                         
                         <div class="mb-3">
                             <label for="derscription" class="form-label">Aciglama</label>
-                            <textarea name="description" id="description" class="form-control"></textarea>
+                            <textarea name="description" id="description" class="form-control <?php echo (!empty($description_err)) ? 'is-invalid' : '' ?>"><?php echo $description;?></textarea>
+                            <span class="invalid-feedback"><?php echo $description_err?></span>
                         </div>
                         
                         <div class="mb-3">

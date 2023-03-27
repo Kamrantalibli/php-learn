@@ -32,7 +32,7 @@
     "movies": [
         {
             "id": 1,
-            "title": "film 1",
+            "title": "film 11",
             "description": "film 1 description",
             "url": "film-1",
             "image-url": "1.jpeg",
@@ -66,16 +66,6 @@
             "description": "film 4 description",
             "url": "film-4",
             "image-url": "3.jpeg",
-            "likes": 0,
-            "comments": 0,
-            "is-active": true
-        },
-        {
-            "id": 5,
-            "title": "film 5",
-            "description": "film 5 description",
-            "image-url": "1.jpeg",
-            "url": "film-1",
             "likes": 0,
             "comments": 0,
             "is-active": true

@@ -14,35 +14,33 @@
 
             <div class="card mb-1">
                 <div class="card-body">
-                    <a href="blog-create.php" class="btn btn-primary">New Blog</a>
+                    <a href="category-create.php" class="btn btn-primary">New Category</a>
                 </div>
             </div>
 
 
             <table class="table table-bordered">
                 <thead>
-                    <th style="width: 80px;">Image</th>
-                    <th>Title</th>
-                    <th>Url</th>
+                    <th style="width: 80px;">Id</th>
+                    <th>Category Name</th>
                     <th style="width: 100px;">Is active</th>
                     <th style="width: 130px;"></th>
                 </thead>
                 <tbody>
-                    <?php $result = getBlogs(); while($film = mysqli_fetch_assoc($result)): ?>
+                    <?php $result = getCategories(); while($item = mysqli_fetch_assoc($result)): ?>
                         <tr>
-                            <td><img class="img-fluid" src="img/<?php echo $film["imageUrl"]?>" alt=""></td>
-                            <td><?php echo $film["title"];?></td>
-                            <td><?php echo $film["url"];?></td>
+                            <td><?php echo $item["id"];?></td>
+                            <td><?php echo $item["name"];?></td>
                             <td>
-                                <?php if($film["isActive"]): ?>
+                                <?php if($item["isActive"]): ?>
                                     <i class="fas fa-check"></i>
                                 <?php else: ?>
                                     <i class="fas fa-times"></i>
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <a class="btn btn-primary btn-sm" href="blog-edit.php?id=<?php echo $film["id"]?>">Edit</a>
-                                <a class="btn btn-danger btn-sm" href="blog-delete.php?id=<?php echo $film["id"]?>">Delete</a>
+                                <a class="btn btn-primary btn-sm" href="category-edit.php?id=<?php echo $item["id"]?>">Edit</a>
+                                <a class="btn btn-danger btn-sm" href="category-delete.php?id=<?php echo $item["id"]?>">Delete</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
