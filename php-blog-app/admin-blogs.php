@@ -24,6 +24,7 @@
                     <th style="width: 80px;">Image</th>
                     <th>Title</th>
                     <th>Url</th>
+                    <th>Category</th>
                     <th style="width: 100px;">Is active</th>
                     <th style="width: 130px;"></th>
                 </thead>
@@ -33,6 +34,23 @@
                             <td><img class="img-fluid" src="img/<?php echo $film["imageUrl"]?>" alt=""></td>
                             <td><?php echo $film["title"];?></td>
                             <td><?php echo $film["url"];?></td>
+                            <td>
+                            
+                            <?php
+                                echo "<ul>";
+                                    $data = getCategoriesByBlogId($film["id"]);
+
+                                    if (mysqli_num_rows($data) > 0) {
+                                        while($category = mysqli_fetch_assoc($data)) {
+                                            echo "<li>".$category["name"]."</li>";
+                                        }
+                                    } else {
+                                        echo "<li>Category was not selected</li>";
+                                    }
+                                echo "</ul>";
+                            ?>
+
+                            </td>
                             <td>
                                 <?php if($film["isActive"]): ?>
                                     <i class="fas fa-check"></i>

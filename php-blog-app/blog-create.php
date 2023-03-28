@@ -2,8 +2,10 @@
     require "libs/vars.php";
     require "libs/functions.php";
 
-    $title = $description = "";
-    $title_err = $description_err = "";
+    $title = $description = $category = "";
+    $title_err = $description_err = $category_err = "";
+
+    $categories = getCategories();
 
     if($_SERVER['REQUEST_METHOD'] == "POST"){
 
@@ -29,15 +31,20 @@
             $description = control_input($input_description);
         }
 
+        // validate category
+        $select_category = $_POST["category"];
+
+        if($select_category == "0") {
+            $category_err = "Please select category.";
+        } else {
+            $category = $_POST["category"];
+        }
+
         $imageUrl = $_POST['imageUrl'];
         $url = $_POST['url'];
 
-        echo $title;
-        echo "<br>";
-        echo $description;
-
-        if(empty($title_err) && empty($description_err)) {
-            if(createBlog($title, $description, $imageUrl, $url)) {
+        if(empty($title_err) && empty($description_err) && empty($category_err)) {
+            if(createBlog($title, $description, $imageUrl, $url, $category)) {
                 $_SESSION['message'] = $title." blog has been added.";
                 $_SESSION['type'] = "success";
         
@@ -55,7 +62,7 @@
 
 <div class="container my-3">
     <div class="row">
-        <dib class="col-12">
+        <div class="col-12">
 
             <div class="card">
                 <div class="card-body">
@@ -82,13 +89,28 @@
                             <input type="text" class="form-control" name="url" id="url">
                         </div>
 
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select name="category" id="category" class="form-select <?php echo (!empty($category_err)) ? 'is-invalid' : '' ?>">
+                                <option selected value="0">Select</option>
+                                <?php foreach ($categories as $c) {
+                                    echo "<option value='{$c["id"]}'> {$c["name"]} </option>";
+                                }?>
+                            </select>
+                            <span class="invalid-feedback"><?php echo $category_err?></span>
+                            <script type="text/javascript">
+                                document.getElementById("category").value = "<?php echo $category;?>"
+                            </script>
+                        </div>
+
                         <input type="submit" value="Submit" class="btn btn-primary">
                     </form>
                 </div>
             </div>
 
-        </dib>
+        </div>
     </div>
 </div>
     
+<?php include "views/_ckeditor.php"; ?>
 <?php include "views/_footer.php"; ?>

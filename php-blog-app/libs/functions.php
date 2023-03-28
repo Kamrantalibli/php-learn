@@ -8,7 +8,7 @@
         return $result;
     };
 
-    function createUser(string $name, string $email, string $username, string $password,) {
+    function createUser(string $name, string $email, string $username, string $password) {
         $db = getData();
         
         array_push($db["users"], array(
@@ -44,14 +44,14 @@
         return $result;
     }
 
-    function createBlog(string $title, string $description, string $imageUrl, string $url, int $isActive=0) {
+    function createBlog(string $title, string $description, string $imageUrl, string $url, int $category, int $isActive=0) {
         include "settings.php";
 
         #Query.
-        $query = "INSERT INTO blogs(title, description, imageUrl, url, isActive) VALUES (?,?,?,?,?)";
+        $query = "INSERT INTO blogs(title, description, imageUrl, url, category_id, isActive) VALUES (?, ?, ?, ?, ?, ?)";
         $result = mysqli_prepare($connection,$query);
         
-        mysqli_stmt_bind_param($result, 'ssssi', $title,$description,$imageUrl,$url,$isActive);
+        mysqli_stmt_bind_param($result, 'ssssii', $title,$description,$imageUrl,$url,$category,$isActive);
         mysqli_stmt_execute($result);
         mysqli_stmt_close($result);
 
@@ -71,10 +71,34 @@
     function editBlog(int $id, string $title, string $description, string $imageUrl, string $url, int $isActive) {
         include "settings.php";
 
-        $query = "UPDATE blogs SET title='$title', description='$description', imageUrl='$imageUrl', url='$url', isActive='$isActive' WHERE id='$id'";
+        $query = "UPDATE blogs SET title='$title', description='$description', imageUrl='$imageUrl', url='$url', isActive=$isActive WHERE id='$id'";
         $result = mysqli_query($connection, $query);
         echo mysqli_error($connection);
 
+        return $result;
+    }
+
+    function clearBlogCategories(int $blogid) {
+        include "settings.php";
+
+        $query = "DELETE FROM blog_category WHERE blog_id=$blogid";
+        $result = mysqli_query($connection, $query);
+        echo mysqli_error($connection);
+
+        return $result;
+    }
+
+    function addBlogToCategories(int $blogid, array $categories) {
+        include "settings.php";
+
+        $query = "";
+     //   var_dump($categories); exit;
+        foreach($categories as $catid) {
+            $query .= "INSERT INTO blog_category(blog_id,category_id) VALUES ($blogid,$catid);";
+        }
+        $result = mysqli_multi_query($connection, $query);
+        echo mysqli_error($connection);
+           
         return $result;
     }
 
@@ -94,6 +118,43 @@
         $result = mysqli_query($connection,$query);
         mysqli_close($connection);
         
+        return $result;
+    }
+
+    function getCategoriesByBlogId(int $id) {
+        include "settings.php";
+
+        $query = "SELECT c.id,c.name FROM blog_category bc INNER JOIN categories c ON bc.category_id=c.id WHERE bc.blog_id=$id";
+    
+        $result = mysqli_query($connection,$query);
+       
+       // var_dump($result); exit;
+        mysqli_close($connection);
+
+        return $result;
+    }
+
+    function getBlogsByCategoryId(int $id) {
+        include "settings.php";
+
+        $query = "SELECT * FROM blog_category bc INNER JOIN blogs b ON bc.blog_id=b.id WHERE bc.category_id=$id";
+    
+        $result = mysqli_query($connection,$query);
+       
+       // var_dump($result); exit;
+        mysqli_close($connection);
+
+        return $result;
+    }
+
+    function getBlogsByKeyword($q) {
+        include "settings.php";
+
+        $query = "SELECT * FROM blogs WHERE title LIKE '%$q%' OR description LIKE '%$q%' ";
+        $result = mysqli_query($connection,$query);
+       // var_dump($result); exit;
+        mysqli_close($connection);
+
         return $result;
     }
 
