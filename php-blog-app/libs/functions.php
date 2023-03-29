@@ -44,14 +44,56 @@
         return $result;
     }
 
-    function createBlog(string $title, string $description, string $imageUrl, string $url, int $category, int $isActive=0) {
+    function getBlogsByFilters($categoryId, $keyword, $page) {
+        include "settings.php";
+
+        $pageCount = 2;
+        $offset = ($page-1) * $pageCount;
+        $query = "";
+
+        if(!empty($categoryId)) {
+            $query = "FROM blog_category bc INNER JOIN blogs b ON bc.blog_id=b.id WHERE bc.category_id= $categoryId AND b.isActive=1 ";
+        } else {
+            $query = "FROM blogs b WHERE b.isActive=1 ";
+        }
+
+        if(!empty($keyword)) {
+            $query .= " && b.title LIKE '%$keyword%' OR b.description LIKE '%$keyword%' ";
+        }
+        $total_sql = "SELECT COUNT(*) ".$query;
+
+        $count_data = mysqli_query($connection,$total_sql);
+        $count = mysqli_fetch_array($count_data)[0];
+        $total_pages = ceil($count / $pageCount);
+
+        $sql = "SELECT * ".$query." LIMIT $offset, $pageCount";
+        $result = mysqli_query($connection,$sql);
+        mysqli_close($connection);
+        
+        return array(
+            "total_pages" => $total_pages,
+            "data" => $result
+        );
+    }
+
+    function getHomePageBlogs() {
+        include "settings.php";
+
+        $query = "SELECT * FROM blogs WHERE isActive=1 AND isHome=1 ORDER BY dateAdded DESC";
+        $result = mysqli_query($connection,$query);
+        mysqli_close($connection);
+        
+        return $result;
+    }
+
+    function createBlog(string $title, string $sdescription, string $description, string $imageUrl, string $url, int $isActive=0) {
         include "settings.php";
 
         #Query.
-        $query = "INSERT INTO blogs(title, description, imageUrl, url, category_id, isActive) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO blogs(title, short_description, description, imageUrl, url, isActive) VALUES (?, ?, ?, ?, ?, ?)";
         $result = mysqli_prepare($connection,$query);
         
-        mysqli_stmt_bind_param($result, 'ssssii', $title,$description,$imageUrl,$url,$category,$isActive);
+        mysqli_stmt_bind_param($result, 'sssssi', $title,$sdescription,$description,$imageUrl,$url,$isActive);
         mysqli_stmt_execute($result);
         mysqli_stmt_close($result);
 
@@ -68,10 +110,10 @@
         return $result;
     }
 
-    function editBlog(int $id, string $title, string $description, string $imageUrl, string $url, int $isActive) {
+    function editBlog(int $id, string $title, string $description, string $sdescription, string $imageUrl, string $url, int $isActive, int $isHome) {
         include "settings.php";
 
-        $query = "UPDATE blogs SET title='$title', description='$description', imageUrl='$imageUrl', url='$url', isActive=$isActive WHERE id='$id'";
+        $query = "UPDATE blogs SET title='$title', short_description='$sdescription', description='$description', imageUrl='$imageUrl', url='$url', isActive=$isActive, isHome=$isHome WHERE id='$id'";
         $result = mysqli_query($connection, $query);
         echo mysqli_error($connection);
 
@@ -213,6 +255,50 @@
         $result = mysqli_query($connection,$query);
 
         return $result;
+    }
+
+    function saveImage($file) {
+        $message = "";
+        $uploadOk = 1;
+        $fileTempPath = $file["tmp_name"];
+        $fileName = $file["name"];
+        $fileSize = $file["size"];
+        $maxfileSize = ((1024 * 1024) * 1);
+        $fileExtensions = array("jpg","jpeg","png");
+        $uploadFolder = "./img/";
+
+
+        $fileSize_Arr = explode(".",$fileName); # image.jpeg 
+        $fileOrginalName = $fileSize_Arr[0];    # image
+        $fileExtension = $fileSize_Arr[1];      # jpeg
+        
+        if($fileSize > $maxfileSize) {
+            $message = "File size is too large.<br>";
+        }
+
+        if(!in_array($fileExtension,$fileExtensions)) {
+            $message .= "This file extension is not accepted.<br>";
+            $message .= "Acceptable file extensions ".implode(",",$fileExtensions)." <br>";
+            $uploadOk = 0;
+        }
+
+        $newFileName = md5(time().$fileOrginalName).'.'.$fileExtension;
+        $dest_path = $uploadFolder.$newFileName;
+
+        if($uploadOk == 0) {
+            $message .= "File is not uploaded. <br>";
+        } else {
+            if(move_uploaded_file($fileTempPath, $dest_path)) {
+                $message = "File is uploaded. <br>";
+            }
+        }
+
+
+        return array(
+            "isSuccess" => $uploadOk,
+            "message" => $message,
+            "image" => $newFileName
+        );
     }
 
 ?>

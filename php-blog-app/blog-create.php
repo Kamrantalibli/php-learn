@@ -2,8 +2,8 @@
     require "libs/vars.php";
     require "libs/functions.php";
 
-    $title = $description = $category = "";
-    $title_err = $description_err = $category_err = "";
+    $title = $description = $sdescription = $category = $image = "";
+    $title_err = $description_err = $sdescription_err = $category_err = $image_err = "";
 
     $categories = getCategories();
 
@@ -31,20 +31,25 @@
             $description = control_input($input_description);
         }
 
-        // validate category
-        $select_category = $_POST["category"];
-
-        if($select_category == "0") {
-            $category_err = "Please select category.";
+        print_r($_FILES["image"]);
+        if(empty($_FILES["image"]["name"])) {
+            $image_err = "Please select a file";
         } else {
-            $category = $_POST["category"];
+            $result = saveImage($_FILES["image"]);
+
+            if($result["isSuccess"] == 0) {
+                $image_err = $result["message"];
+            } else {
+                $image = $result["image"];
+            }
         }
 
-        $imageUrl = $_POST['imageUrl'];
+
+        $sdescription = $_POST['sdescription'];
         $url = $_POST['url'];
 
-        if(empty($title_err) && empty($description_err) && empty($category_err)) {
-            if(createBlog($title, $description, $imageUrl, $url, $category)) {
+        if(empty($title_err) && empty($description_err)) {
+            if(createBlog($title, $sdescription, $description, $image, $url)) {
                 $_SESSION['message'] = $title." blog has been added.";
                 $_SESSION['type'] = "success";
         
@@ -66,41 +71,34 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="blog-create.php" method="POST">
+                    <form action="blog-create.php" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
                             <input type="text" class="form-control <?php echo (!empty($title_err)) ? 'is-invalid' : '' ?>" name="title" id="title" value="<?php echo $title; ?>">
                             <span class="invalid-feedback"><?php echo $title_err?></span>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="sderscription" class="form-label">Short Description</label>
+                            <textarea name="sdescription" id="sdescription" class="form-control <?php echo (!empty($sdescription_err)) ? 'is-invalid' : '' ?>"><?php echo $sdescription;?></textarea>
+                            <span class="invalid-feedback"><?php echo $sdescription_err?></span>
+                        </div>
                         
                         <div class="mb-3">
-                            <label for="derscription" class="form-label">Aciglama</label>
+                            <label for="derscription" class="form-label">Description</label>
                             <textarea name="description" id="description" class="form-control <?php echo (!empty($description_err)) ? 'is-invalid' : '' ?>"><?php echo $description;?></textarea>
                             <span class="invalid-feedback"><?php echo $description_err?></span>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="imageUrl" class="form-label">imageUrl</label>
-                            <input type="text" class="form-control" name="imageUrl" id="imageUrl">
+                            <label for="imageUrl" class="form-label">Image</label>
+                            <input type="file" name="image" id="image" class="form-control <?php echo (!empty($image_err)) ? 'is-invalid' : '' ?>">
+                            <span class="invalid-feedback"><?php echo $image_err?></span>
                         </div>
 
                         <div class="mb-3">
                             <label for="url" class="form-label">Url</label>
                             <input type="text" class="form-control" name="url" id="url">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="category" class="form-label">Category</label>
-                            <select name="category" id="category" class="form-select <?php echo (!empty($category_err)) ? 'is-invalid' : '' ?>">
-                                <option selected value="0">Select</option>
-                                <?php foreach ($categories as $c) {
-                                    echo "<option value='{$c["id"]}'> {$c["name"]} </option>";
-                                }?>
-                            </select>
-                            <span class="invalid-feedback"><?php echo $category_err?></span>
-                            <script type="text/javascript">
-                                document.getElementById("category").value = "<?php echo $category;?>"
-                            </script>
                         </div>
 
                         <input type="submit" value="Submit" class="btn btn-primary">

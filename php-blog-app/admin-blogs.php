@@ -26,6 +26,7 @@
                     <th>Url</th>
                     <th>Category</th>
                     <th style="width: 100px;">Is active</th>
+                    <th style="width: 100px;">Is home</th>
                     <th style="width: 130px;"></th>
                 </thead>
                 <tbody>
@@ -53,6 +54,13 @@
                             </td>
                             <td>
                                 <?php if($film["isActive"]): ?>
+                                    <i class="fas fa-check"></i>
+                                <?php else: ?>
+                                    <i class="fas fa-times"></i>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if($film["isHome"]): ?>
                                     <i class="fas fa-check"></i>
                                 <?php else: ?>
                                     <i class="fas fa-times"></i>

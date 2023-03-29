@@ -1,17 +1,29 @@
 <?php 
-    if(isset($_GET["categoryid"]) && is_numeric($_GET["categoryid"])) {
-        $result = getBlogsByCategoryId($_GET["categoryid"]); 
-    } elseif(isset($_GET["q"])) {
-        $result = getBlogsByKeyword($_GET["q"]);
-    } else {
-        $result = getBlogs();
-    }
+
+    $categoryId = "";
+    $keyword = "";
+    $page = 1;
+
+    if(isset($_GET["categoryid"]) && is_numeric($_GET["categoryid"])) $categoryId = $_GET["categoryid"];
+    if(isset($_GET["q"])) $keyword = $_GET["q"];
+    if(isset($_GET["page"]) && is_numeric($_GET["page"])) $page = $_GET["page"];
+
+    $result = getBlogsByFilters($categoryId, $keyword, $page);
+
+
+    // if(isset($_GET["categoryid"]) && is_numeric($_GET["categoryid"])) {
+    //     $result = getBlogsByCategoryId($_GET["categoryid"]); 
+    // } elseif(isset($_GET["q"])) {
+    //     $result = getBlogsByKeyword($_GET["q"]);
+    // } else {
+    //     $result = getBlogs();
+    // }
     
 ?>
 
-<?php if(mysqli_num_rows($result) > 0): ?>
+<?php if(mysqli_num_rows($result["data"]) > 0): ?>
 
-<?php while($film = mysqli_fetch_assoc($result)): ?>
+<?php while($film = mysqli_fetch_assoc($result["data"])): ?>
     <?php if($film["isActive"]):?>
         <div class="card mb-3">
             <div class="row">
@@ -21,7 +33,7 @@
                 <div class="col-9">
                     <div class="card-body">
                         <h5 class="card-title"><a href="blog-details.php?id=<?php echo $film["id"] ;?>"><?php echo $film["title"] ;?></a></h5>
-                        <p class="card-text"><?php echo shortDescription(htmlspecialchars_decode($film["description"]),100); ?></p>
+                        <p class="card-text"><?php echo shortDescription(htmlspecialchars_decode($film["short_description"]),100); ?></p>
                     </div>
                 </div>
             </div>
@@ -32,3 +44,28 @@
 <?php else: ?>
     <div class="alert alert-warning">Blog not found in this category</div>
 <?php endif; ?>
+
+<?php if($result["total_pages"] > 1): ?>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <?php for ($x=1; $x <= $result["total_pages"]; $x++): ?>
+        <li class="page-item <?php if($x == $page) echo "active"?>"><a class="page-link" href="
+        
+        <?php 
+            $url = "?page=".$x;
+            if(!empty($categoryId)) {
+                $url .= "&categoryid=".$categoryId;
+            }
+            if(!empty($keyword)) {
+                $url .= "&q=".$keyword;
+            }
+
+            echo $url;
+        ?>
+        ">
+        <?php echo $x; ?></a></li>
+    <?php endfor; ?>
+  </ul>
+</nav>
+<?php endif; ?>
+
