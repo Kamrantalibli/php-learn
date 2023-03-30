@@ -2,6 +2,11 @@
     require "libs/vars.php";
     require "libs/functions.php";
 
+    if(!isAdmin()) {
+        header("location: unauthorize.php");
+        exit;
+    }
+
     $title = $description = $sdescription = $category = $image = "";
     $title_err = $description_err = $sdescription_err = $category_err = $image_err = "";
 

@@ -2,6 +2,11 @@
     require "libs/vars.php";
     require "libs/functions.php";
 
+    if(!isAdmin()) {
+        header("location: unauthorize.php");
+        exit;
+    }
+
     $id = $_GET["id"];
     $result = getBlogById($id);
     $selectedMovie = mysqli_fetch_assoc($result);

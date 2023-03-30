@@ -257,6 +257,22 @@
         return $result;
     }
 
+    function isLoggedin() {
+        if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function isAdmin() {
+        if(isLoggedin() && isset( $_SESSION["user_type"]) && $_SESSION["user_type"] === "admin") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function saveImage($file) {
         $message = "";
         $uploadOk = 1;
