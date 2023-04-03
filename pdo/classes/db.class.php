@@ -7,9 +7,9 @@
         private $dbName = "mydb";
         
         protected function connect () {
-            try{
-                $dsn = "mysql:host="$this->host.";dbname="$this->dbName;
-                $pdo = new PDO($this->dsn, $this->user, $this->password);
+                try{
+                $dsn = "mysql:host=".$this->host.";dbname=".$this->dbName;
+                $pdo = new PDO($dsn, $this->user, $this->password);
 
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
